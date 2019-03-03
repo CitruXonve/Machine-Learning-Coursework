@@ -1,0 +1,11 @@
+.DS_Store
+*.rar
+*.zip
+
+# ignore latex auxiliary files
+*.aux
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.synctex.gz
