@@ -37,9 +37,6 @@ class NeuralNetwork:
         # random activate
         self.input_weights=np.random.uniform(-1,1,(self.input_n,self.hidden_n))
         self.output_weights=np.random.uniform(-1,1,(self.hidden_n,self.output_n))
-        # init correction matrix
-        self.input_correction = np.zeros((self.input_n, self.hidden_n))
-        self.output_correction = np.zeros((self.hidden_n, self.output_n))
 
     def predict(self, x_train):
         # activate input layer
@@ -54,7 +51,7 @@ class NeuralNetwork:
         self.output_cells=np.round(sigmoid(np.dot(self.hidden_cells,self.output_weights)))
         return self.output_cells
 
-    def back_propagate(self, x_train, y_train, learn, correct):#x,y,修改最大迭代次数， 学习率λ， 矫正率μ三个参数.
+    def back_propagate(self, x_train, y_train, learn):#x,y,修改最大迭代次数， 学习率λ， 矫正率μ三个参数.
         # feed forward
         self.predict(x_train)
         # get output layer error
@@ -66,25 +63,23 @@ class NeuralNetwork:
 
         # update output weights
         delta=np.dot(self.hidden_cells.T,output_deltas)
-        self.output_weights+=learn*delta+correct*self.output_correction
-        self.output_correction=delta
+        self.output_weights+=learn*delta
 
         # update input weights
         delta=np.dot(self.input_layer.T,hidden_deltas)
-        self.input_weights+=learn*delta+correct*self.input_correction
-        self.input_correction=delta
+        self.input_weights+=learn*delta
 
         # get global error
         # error=(y_train*self.output_cells)**2/len(y_train)
         # return np.sum(error)
 
-    def train(self, x_train, y_train, limit=10000, learn=0.05, correct=0.1):
+    def train(self, x_train, y_train, limit=10000, learn=0.05):
         # prior_error=0.0
         for j in range(limit):
             # error = 0.0
             for i in range(len(x_train)):
-                # error += self.back_propagate(x_train[i], y_train[i], learn, correct)
-                self.back_propagate(x_train[i], y_train[i], learn, correct)
+                # error += self.back_propagate(x_train[i], y_train[i], learn)
+                self.back_propagate(x_train[i], y_train[i], learn)
             # if np.abs(prior_error-error)<epsilon:
             if np.sum(np.abs(y_train-self.test(x_train)))<1.0:
                 print("Converge after " + str(j) + " epoch(s).")
