@@ -19,7 +19,7 @@ def read_data(filename):
     return n, dimension, train_x, train_y
     
 l, dimension, X0, Y0 = read_data('classification.txt')
-# print X0,Y0
+print X0,Y0
 
 Coefficient = np.zeros((dimension,1))
 # Y0=Y0.T
@@ -53,7 +53,7 @@ def gradient_descent(X, Y, C, learning_rate, iterations):
     return iteration, C
 
 # 7000 Iterations with learning rate of 0.001
-iterarion, Coefficients = gradient_descent(X0, Y0, Coefficient, 0.001, 7000)
+iterarion, Coefficients = gradient_descent(X0, Y0, Coefficient, 0.001, 5)
 
 # Intercept a0, Coefficient of X: a1, Coefficient of Y:a2
 print 'Epoch #', iterarion , 'Weight matrix=',Coefficients.T
